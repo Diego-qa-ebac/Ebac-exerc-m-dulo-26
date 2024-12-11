@@ -1,45 +1,31 @@
-name: Ebac 
+ name: Ebac Atividade CI
 
-on:
+on: 
   push:
-
-    branches> [ ci ] 
-
-jobs:
-  cypress-tests:
-    runs-on: ubuntu-20.04 
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run Cypress tests
-        uses: cypress-io/github-action@v6.7.8
-        with:
-          install-command: npm ci
-          browser: chrome
-
-  
-      - name: Publish report
-=======
     branches: [ ci ]
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Publish reports
+  workflow_dispatch:
 
-        uses: peaceiris/actions-gh-pages@v4
+jobs:
+
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        continue-on-error: true
+        with:
+          install-command: npm install
+          browser: chrome
+      - name: Publish report 
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./mochawesome-report
