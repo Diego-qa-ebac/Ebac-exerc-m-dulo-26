@@ -1,38 +1,32 @@
-name: Run Cypress Tests
+name: Ebac 
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
+    branches> [ ci ] 
 
 jobs:
   cypress-tests:
-    runs-on: ubuntu-20.04 # Altere para 22.04 se preferir a versão mais recente.
+    runs-on: ubuntu-20.04 
 
     steps:
-      # Checkout do código
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Configuração do Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      # Instalação de dependências
       - name: Install dependencies
         run: npm ci
 
-      # Execução do Cypress
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6.7.8
         with:
           install-command: npm ci
           browser: chrome
 
-      # Publicação do relatório
+  
       - name: Publish report
         uses: peaceiris/actions-gh-pages@v4
         with:
