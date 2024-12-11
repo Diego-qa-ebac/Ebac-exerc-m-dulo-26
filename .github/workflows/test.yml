@@ -2,6 +2,7 @@ name: Ebac
 
 on:
   push:
+
     branches> [ ci ] 
 
 jobs:
@@ -28,6 +29,16 @@ jobs:
 
   
       - name: Publish report
+=======
+    branches: [ ci ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Publish reports
+
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
