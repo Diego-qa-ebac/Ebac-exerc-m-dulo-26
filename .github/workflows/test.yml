@@ -1,38 +1,40 @@
-name: Ebac CI
+name: Run Cypress Tests
 
-on: 
+on:
   push:
-    branches: [ ci ]
-
-  workflow_dispatch:
+    branches:
+      - main
+  pull_request:
 
 jobs:
-
-  test:
-
-    runs-on: ubuntu-latest
+  cypress-tests:
+    runs-on: ubuntu-20.04 # Altere para 22.04 se preferir a versão mais recente.
 
     steps:
+      # Checkout do código
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      # Configuração do Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 18
-      - name: Cypress run
+
+      # Instalação de dependências
+      - name: Install dependencies
+        run: npm ci
+
+      # Execução do Cypress
+      - name: Run Cypress tests
         uses: cypress-io/github-action@v6.7.8
-        continue-on-error: true
         with:
-          install-command: npm install
+          install-command: npm ci
           browser: chrome
-      - name: Publish report 
+
+      # Publicação do relatório
+      - name: Publish report
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./mochawesome-report
-          
-
-
-          
-
-      
-  
